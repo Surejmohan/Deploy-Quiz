@@ -1,0 +1,62 @@
+<h2>Create An Account</h2>
+{{#if errors}}
+			{{#each errors}}
+				<div class="notice error"><i class="icon-remove-sign icon-large"></i> {{msg}}
+				<a href="#close" class="icon-remove"></a></div>
+			{{/each}}
+		{{/if}}
+<form id="regForm" method="post" action="/users/register">
+	<div>
+		<label>Branch</label>
+		<select name="branch" required>
+			<option value="">--select--</option>
+			<option value="CSE">CSE</option>
+			<option value="EEE">EEE</option>
+			<option value="ME">ME</option>
+			<option value="IT">IT</option>
+		</select>
+	</div>
+	<br />
+	<div>
+		<label>Semester</label>
+		<select name="semester" required>
+			<option value="">--select--</option>
+			<option value="s1">S1</option>
+			<option value="s2">S2</option>
+			<option value="s3">S3</option>
+			<option value="s4">S4</option>
+			<option value="s5">S5</option>
+			<option value="s6">S6</option>
+			<option value="s7">S7</option>
+			<option value="s8">S8</option>
+		</select>
+	</div>
+	<br />
+	<div>
+		<label>Name: </label>
+		<input type="text" name="name" required>
+	</div><br />
+	<div>
+		<label>Email Address: </label>
+		<input type="email" name="email" required>
+	</div><br />
+	<div>
+		<label>Mobile : </label>
+		<input type="tel" name="phone" required>
+	</div><br />
+	<div>
+		<label>Username: </label>
+		<input type="text" name="username" required>
+	</div><br />
+	<div>
+		<label>Password: </label>
+		<input type="password" name="password" required>
+	</div><br />
+	<div>
+		<label>Password Confirm: </label>
+		<input type="password" name="password2" required>
+	</div><br />
+	<div>
+		<input type="submit" value="Signup">
+	</div>
+</form>

@@ -1,0 +1,294 @@
+{{#if user }}
+<style>
+:root {
+  background-color: #ecf5ff;
+  font-size: 65%;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+/* BUTTONS */
+.btn {
+  font-size: 1.8rem;
+  padding: 1rem 0;
+  width: 20rem;
+  text-align: center;
+  border: 0.1rem solid #56a5eb;
+  margin-bottom: 1rem;
+  text-decoration: none;
+  color: #56a5eb;
+  background-color: white;
+}
+
+.btn:hover {
+  cursor: pointer;
+  box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+  transform: translateY(-0.1rem);
+  transition: transform 150ms;
+}
+
+.btn[disabled]:hover {
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.choice-container {
+  display: flex;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  font-size: 1.8rem;
+  border: 0.1rem solid rgb(86, 165, 235, 0.25);
+  background-color: white;
+}
+
+.choice-container:hover {
+  cursor: pointer;
+  box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+  transform: translateY(-0.1rem);
+  transition: transform 150ms;
+}
+
+.choice-prefix {
+  padding: 1.5rem 2.5rem;
+  background-color: #56a5eb;
+  color: white;
+}
+
+.choice-text {
+  padding: 1.5rem;
+  width: 100%;
+}
+
+.correct {
+  background-color: #28a745;
+}
+
+.incorrect {
+  background-color: #dc3545;
+}
+
+/* HUD */
+
+#hud {
+  display: flex;
+  justify-content: space-between;
+}
+
+.hud-prefix {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.hud-main-text {
+  text-align: center;
+}
+
+#progressBar {
+  width: 20rem;
+  height: 4rem;
+  border: 0.3rem solid #56a5eb;
+  margin-top: 1.5rem;
+}
+
+#progressBarFull {
+  height: 3.4rem;
+  background-color: #56a5eb;
+  width: 0%;
+}
+</style>
+
+<div class="container">
+      <div id="game" style="display: none;" class="justify-center flex-column hidden">
+        <div id="hud">
+          <div id="hud-item">
+            <p id="progressText" class="hud-prefix">
+              Question
+            </p>
+            <div id="progressBar">
+              <div id="progressBarFull"></div>
+            </div>
+          </div>
+          <div id="hud-item">
+            <p class="hud-prefix">
+              Time
+            </p>
+            <h1 class="hud-main-text" id="time">
+              3
+            </h1>
+          </div>
+        </div>
+        <h2 id="question"></h2>
+        <div class="choice-container">
+          <p class="choice-prefix">A</p>
+          <p class="choice-text" data-number="1"></p>
+        </div>
+        <div class="choice-container">
+          <p class="choice-prefix">B</p>
+          <p class="choice-text" data-number="2"></p>
+        </div>
+        <div class="choice-container">
+          <p class="choice-prefix">C</p>
+          <p class="choice-text" data-number="3"></p>
+        </div>
+        <div class="choice-container">
+          <p class="choice-prefix">D</p>
+          <p class="choice-text" data-number="4"></p>
+        </div>
+      </div>
+    </div>
+
+<div class="container">
+      <div id="home"class="flex-center flex-column">
+        <h1>Start Quiz</h1>
+        <button class="btn" onclick="startGame();">Play</button>
+        
+      </div>
+    </div>
+
+<script>
+const question = document.getElementById("question");
+const choices = Array.from(document.getElementsByClassName("choice-text"));
+const progressText = document.getElementById("progressText");
+const progressBarFull = document.getElementById("progressBarFull");
+let currentQuestion = {};
+let acceptingAnswers = false;
+let score = 0;
+let questionCounter = 0;
+let availableQuesions = []; 
+
+const MAX_QUESTIONS = 3;
+
+
+let questions = [
+  {
+    "question": "Inside which HTML element do we put the JavaScript??",
+    "choice1": " <script>" ,
+    "choice2": " <javascript> ",
+    "choice3": " <js> ",
+    "choice4": " <scripting> ",
+    "answer": 1
+  },
+  {
+    "question": "What is the correct syntax for referring to an external script called 'xxx.js'?",
+    "choice1": " script href='xxx.js'",
+    "choice2": " script name='xxx.js'",
+    "choice3": " script src='xxx.js'",
+    "choice4": " script file='xxx.js'",
+    "answer": 3
+  },
+  {
+    "question": "How do you write 'Hello World' in an alert box?",
+    "choice1": "msgBox('Hello World');",
+    "choice2": "alertBox('Hello World');",
+    "choice3": "msg('Hello World');",
+    "choice4": "alert('Hello World');",
+    "answer": 4
+  }
+];
+
+function startGame()
+{
+  document.getElementById('game').style.display="block";
+  $("#game").show();
+  $("#home").hide();
+  availableQuesions = [...questions]
+  questionCounter = 0;
+  score = 0;
+  getNewQuestion();
+  game.classList.remove("hidden");
+}
+
+getNewQuestion = () => {
+  if (availableQuesions.length === 0 || questionCounter >= MAX_QUESTIONS) {
+    localStorage.setItem("mostRecentScore", score);
+    //go to the end page
+    return window.location.assign("/end.html");
+  }
+  
+  questionCounter++;
+  console.log(availableQuesions);
+  progressText.innerText = `Question ${questionCounter}/${MAX_QUESTIONS}`;
+  console.log(questionCounter/MAX_QUESTIONS)
+  //Update the progress bar
+  progressBarFull.style.width = `${(questionCounter / MAX_QUESTIONS) * 100}%`;
+
+  const questionIndex = Math.floor(Math.random() * availableQuesions.length);
+  console.log(questionIndex)
+  currentQuestion = availableQuesions[questionIndex];
+  question.innerHTML = currentQuestion.question;
+
+  choices.forEach(choice => {
+    const number = choice.dataset["number"];
+    choice.innerHTML = currentQuestion["choice" + number];
+  });
+
+  availableQuesions.splice(questionIndex, 1);
+  acceptingAnswers = true;
+};
+
+choices.forEach(choice => {
+  choice.addEventListener("click", e => {
+    if (!acceptingAnswers) return;
+
+    acceptingAnswers = false;
+    const selectedChoice = e.target;
+    const selectedAnswer = selectedChoice.dataset["number"];
+
+    const classToApply =
+      selectedAnswer == currentQuestion.answer ? "correct" : "incorrect";
+
+    if (classToApply === "correct") {
+      incrementScore();
+    }
+
+    selectedChoice.parentElement.classList.add(classToApply);
+
+    setTimeout(() => {
+      selectedChoice.parentElement.classList.remove(classToApply);
+      getNewQuestion();
+    }, 1000);
+  });
+});
+
+incrementScore = () => {
+  score += 1
+  console.log(score);
+};
+ 
+var seconds = 3*60;
+function secondPassed() {
+
+          var minute = Math.floor(seconds/60);
+		      var second = seconds%60;
+          if (seconds <= 0) {
+              clearInterval(countdownTimer);
+             //form1 is your form name
+            localStorage.setItem("mostRecentScore", score);
+            //go to the end page
+            return window.location.assign("/end.html");
+          } else {
+            	document.getElementById("time").innerHTML = minute +":"+ second;   
+          }
+          seconds--;
+      }
+      var countdownTimer = setInterval('secondPassed()', 1000);
+
+
+
+</script>
+
+
+{{else}}
+<h3>Welcome To Spectra Technical Quiz </h3>
+	<p>
+	Spectra Technical Quiz is an Event for GEC Students.........................
+	</p>
+	<a class="button" href="/users/register">Sign Up</a>
+	<P>You need to Signup for Participating</p>
+{{/if}}

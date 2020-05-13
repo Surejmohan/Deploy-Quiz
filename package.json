@@ -1,0 +1,35 @@
+{
+  "name": "elearn",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "admin-bro": "^2.3.1",
+    "admin-bro-expressjs": "^2.0.5",
+    "bcryptjs": "*",
+    "body-parser": "^1.19.0",
+    "connect-flash": "*",
+    "cookie-parser": "~1.3.5",
+    "debug": "^4.1.1",
+    "express": "^4.17.1",
+    "express-handlebars": "*",
+    "express-messages": "*",
+    "express-session": "^1.17.1",
+    "express-validator": "^6.4.1",
+    "jquery": "^3.5.1",
+    "mongodb": "^3.5.7",
+    "mongoose": "^5.9.13",
+    "morgan": "^1.10.0",
+    "passport": "*",
+    "passport-http": "*",
+    "passport-local": "*",
+    "serve-favicon": "^2.5.0"
+  },
+  "main": "app.js",
+  "devDependencies": {},
+  "author": "Surej",
+  "license": "ISC",
+  "description": ""
+}
